@@ -1,0 +1,127 @@
+.contentWrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: black;
+  padding: 0 10px;
+}
+
+.blocksWrap {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+  justify-content: space-around;
+  background-color: rgba(255, 255, 255, 0.1);
+  width: 560px;
+  height: 60%;
+  border-radius: 15px;
+  padding: 15px;
+
+  @media (max-width: 425px) {
+    width: 450px;
+    height: 50%;
+  }
+}
+
+.formControl {
+  width: 100%;
+  margin-bottom: 15px;
+  position: relative;
+}
+
+.inputField {
+  position: relative;
+}
+
+.input {
+  width: 100%;
+  padding: 10px 30px 10px 40px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  margin-bottom: 15px;
+}
+
+.icon {
+  position: absolute;
+  left: 13px;
+  bottom: 50%;
+  pointer-events: none;
+  color: #a1a4b5;
+}
+
+.passwordToggle {
+  position: absolute;
+  top: 43%;
+  right: 10px;
+  transform: translate(-50%, -50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #a1a4b5;
+  outline: none;
+  font-size: 20px;
+}
+
+.registerButton {
+  background-color: transparent;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  outline: none;
+  transition: all ease-in-out 0.3s;
+  background-color: #fff;
+}
+
+.registerButton:hover {
+  transition: all ease-in-out 0.3s;
+}
+
+.bottomWrap {
+  p {
+    margin-bottom: 15px;
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  .loginButton {
+    background-color: transparent;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    outline: none;
+    color: black;
+    background-color: #fff;
+    transition: all ease-in-out 0.3s;
+    border-radius: 5px;
+  }
+
+  .loginButton:hover {
+    background-color: rgba(7, 7, 7, 0.737);
+    color: #fff;
+    transition: all ease-in-out 0.3s;
+  }
+}
+
+.registerTitle {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+
+.errorMessage {
+  display: flex;
+  align-items: center;
+  color: red;
+  font-size: 14px;
+  margin-top: 8px;
+
+  svg {
+    margin-right: 5px;
+  }
+}
