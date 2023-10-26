@@ -1,6 +1,6 @@
 import React, { Suspense } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-import { useSelector } from "react-redux"; 
+import { TypedUseSelectorHook, useSelector } from "react-redux";
 
 // Private route
 import PrivateRoute from "./PrivateRoute";
@@ -13,10 +13,17 @@ import NotFound from "../views/NotFound/NotFoundPage";
 // Components
 import Loader from "../components/Loader/Loader";
 
+// Redux state
+import { RootState } from "../redux/store/store";
+
+export const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector;
+
 const AppRouter = () => {
-  const isAuthenticated = useSelector((state) => state.user.isAuthenticated); 
+  const isAuthenticated = useTypedSelector(
+    (state) => state.user.isAuthenticated
+  );
   return (
-    <Suspense fallback={<Loader />}>
+    <Suspense fallback={<Loader isAuthPage={false} />}>
       <Routes>
         <Route
           index
@@ -30,8 +37,8 @@ const AppRouter = () => {
         />
         <Route path="/app" element={<PrivateRoute />}>
           {/* <Route element={<Layout />}> */}
-            {/* <Route index element={<BoardPage />} /> */}
-          </Route>
+          {/* <Route index element={<BoardPage />} /> */}
+        </Route>
         {/* </Route> */}
         <Route path="/registration" element={<RegistrationPage />} />
         <Route path="/login" element={<LoginPage />} />

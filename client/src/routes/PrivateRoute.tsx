@@ -1,9 +1,9 @@
 import React from "react";
 import { Outlet, Navigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useTypedSelector } from "./AppRouter";
 
 const PrivateRoute = () => {
-  const { isAuthenticated, isLoading } = useSelector((state) => state.user);
+  const { isAuthenticated, isLoading } = useTypedSelector((state) => state.user);
 
   if (isLoading) {
     return null;

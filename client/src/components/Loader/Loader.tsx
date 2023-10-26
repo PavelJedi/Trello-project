@@ -3,7 +3,11 @@ import React from "react";
 // Styles
 import styles from "./Loader.module.scss";
 
-const Loader = ({ isAuthPage }) => {
+interface LoaderProps {
+  isAuthPage: boolean;
+}
+
+const Loader: React.FC<LoaderProps> = ({ isAuthPage }) => {
   return (
     <div
       className={`${styles.loader} ${

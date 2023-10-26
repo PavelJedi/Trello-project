@@ -1,9 +1,8 @@
-import axios from "axios";
-
-// Services
+import axios, { AxiosInstance } from "axios";
 import { tokenService } from "./services/tokenService";
 
-let modeUrl;
+let modeUrl: string;
+
 if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
   modeUrl = "http://localhost:5000";
 } else {
@@ -13,23 +12,20 @@ if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
 export const API_URL = modeUrl;
 export const URL = "http://localhost:3000";
 
-const API = axios.create({
+const API: AxiosInstance = axios.create({
   baseURL: API_URL,
   headers: {
     "Content-Type": "application/json",
   },
 });
 
-const addAuthHeaders = async (config) => {
+API.interceptors.request.use(async (config) => {
   const token = tokenService.getToken();
   if (token) {
-    if (config?.headers) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
+    config.headers = config.headers || {};
+    config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
-};
-
-API.interceptors.request.use(addAuthHeaders);
+});
 
 export default API;

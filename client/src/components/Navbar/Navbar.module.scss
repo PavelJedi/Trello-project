@@ -1,0 +1,56 @@
+.navbar {
+  width: 1920px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 20px; /* Add margin on the sides */
+  background-color: #0079bf; /* Example background color */
+  color: #fff; /* Text color */
+
+  .leftSection {
+    display: flex;
+    align-items: center;
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+      margin-right: 10px;
+    }
+    .dash {
+      font-size: 24px;
+    }
+    .boards {
+      font-size: 24px;
+      font-weight: bold;
+      margin-left: 10px;
+    }
+  }
+
+  .rightSection {
+    display: flex;
+    align-items: center;
+
+    .icon {
+      font-size: 24px;
+      margin: 0 10px;
+      cursor: pointer;
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+
+    .userPhoto {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      overflow: hidden;
+      margin-left: 10px;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+  }
+}

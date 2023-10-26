@@ -8,7 +8,9 @@ import { Provider } from "react-redux";
 import store from "./redux/store/store";
 // import ReactModal from "react-modal";
 
-const root = createRoot(document.getElementById("root"));
+const root = createRoot(
+  document.getElementById("root") ?? document.createElement("div")
+);
 
 root.render(
   <React.StrictMode>

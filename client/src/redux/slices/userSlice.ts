@@ -1,5 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getUser } from "../../services/userService";
+import { User } from "../../interfaces/interfaces";
+
+interface UserState {
+  currentUser: User;
+  isLoading: boolean;
+  isAuthenticated: boolean;
+  error: any;
+}
 
 export const fetchUser = createAsyncThunk(
   "user/fetch",
@@ -7,10 +15,10 @@ export const fetchUser = createAsyncThunk(
     try {
       const accessToken = localStorage.getItem("token");
       if (accessToken) {
-        const { data } = await getUser(accessToken);
-        return { user: data, isAuthenticated: true };
+        const user = await getUser();
+        return { user, isAuthenticated: true };
       }
-      return { user: {}, isAuthenticated: false };
+      return { user: {} as User, isAuthenticated: false };
     } catch (error) {
       return rejectWithValue(error);
     }
@@ -20,23 +28,22 @@ export const fetchUser = createAsyncThunk(
 const userSlice = createSlice({
   name: "user",
   initialState: {
-    currentUser: {},
-    isLoading: true,
+    currentUser: { id: 0, name: "" },
     isAuthenticated: !!localStorage.getItem("token"),
     error: null,
-  },
+  } as UserState,
   reducers: {},
-  extraReducers: {
-    [fetchUser.fulfilled]: (state, action) => {
+  extraReducers: (builder) => {
+    builder.addCase(fetchUser.fulfilled, (state, action) => {
       state.currentUser = action.payload.user;
       state.isAuthenticated = action.payload.isAuthenticated;
       state.isLoading = false;
-    },
-    [fetchUser.rejected]: (state, action) => {
+    });
+    builder.addCase(fetchUser.rejected, (state, action) => {
       state.isAuthenticated = false;
       state.isLoading = false;
       state.error = action.payload;
-    },
+    });
   },
 });
 

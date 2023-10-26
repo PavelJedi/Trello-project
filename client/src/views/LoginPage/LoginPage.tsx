@@ -1,32 +1,33 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, MouseEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import { authService } from "../../../services/authService";
+import { authService } from "../../services/authService";
 import { useDispatch } from "react-redux";
-import { fetchUser } from "../../../redux/slices/userSlice";
+import { AppDispatch } from "../../redux/store/store";
+import { fetchUser } from "../../redux/slices/userSlice";
 
 // Icons
 import { FaUser, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 
 // Styles
 import styles from "./LoginPage.module.scss";
-import Loader from "../../../components/Loader/Loader";
+import Loader from "../../components/Loader/Loader";
 
-const LoginPage = () => {
-  const dispatch = useDispatch();
+interface LoginPageProps {}
+
+const LoginPage: React.FC<LoginPageProps> = () => {
+  const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [data, setData] = useState({
+  const [data, setData] = useState<{ email: string; password: string }>({
     email: "",
     password: "",
   });
 
   const [showPassword, setShowPassword] = useState(false);
-
   const [isError, setIsError] = useState(false);
-
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleMouseDownPassword = (e) => e.preventDefault();
+  const handleMouseDownPassword = (e: MouseEvent) => e.preventDefault();
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -37,11 +38,11 @@ const LoginPage = () => {
     [data.email, data.password]
   );
 
-  const handleEmailChange = (e) => {
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setData({ ...data, email: e.target.value });
   };
 
-  const handlePasswordChange = (e) => {
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setData({ ...data, password: e.target.value });
   };
 
@@ -49,6 +50,8 @@ const LoginPage = () => {
     try {
       setIsLoading(true);
       const user = {
+        id: 0,
+        name: "",
         email: data.email,
         password: data.password,
       };
@@ -65,7 +68,7 @@ const LoginPage = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     handleLogin();
   };

@@ -2,7 +2,6 @@ import React, { useState, useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { authService } from "../../services/authService";
 
-//icons
 import {
   FaUser,
   FaEnvelope,
@@ -16,36 +15,38 @@ import { REGEX_EMAIL, REGEX_NAME, REGEX_PASSWORD } from "../../helpers/regex";
 import Loader from "../../components/Loader/Loader";
 import styles from "./RegistrationPage.module.scss";
 
-const RegistrationPage = () => {
+import { RegistrationData, ErrorState, ShowPasswordState, User } from "../../interfaces/interfaces";
+
+const RegistrationPage: React.FC = () => {
   const navigate = useNavigate();
 
-  const [data, setData] = useState({
+  const [data, setData] = useState<RegistrationData>({
     name: "",
     email: "",
     password: "",
   });
 
-  const [hasError, setHasError] = useState({
+  const [hasError, setHasError] = useState<ErrorState>({
     hasMessageError: false,
     hasNameError: "",
     hasEmailError: false,
     hasPasswordError: false,
   });
 
-  const [showPassword, setShowPassword] = useState({
+  const [showPassword, setShowPassword] = useState<ShowPasswordState>({
     current: false,
     confirm: false,
   });
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleMouseDownPassword = (e) => e.preventDefault();
+  const handleMouseDownPassword = (e: { preventDefault: () => any; }) => e.preventDefault();
 
-  const handleClickShowPassword = (name, value) => {
+  const handleClickShowPassword = (name: string, value: boolean) => {
     setShowPassword({ ...showPassword, [name]: value });
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e: { target: { name: any; value: any; }; }) => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
 
@@ -79,7 +80,7 @@ const RegistrationPage = () => {
     return Object.values(errors).includes(true);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     if (!checkValidation()) {
       setIsLoading(true);
@@ -94,10 +95,10 @@ const RegistrationPage = () => {
         name: data.name,
         email: data.email,
         password: data.password,
-      };
+      } as User;
       await authService.registration(user);
       navigate("/login");
-    } catch (error) {
+    } catch (error: any) {
       if (
         error.response &&
         error.response.data &&
