@@ -8,10 +8,12 @@ import PrivateRoute from "./PrivateRoute";
 // Pages
 import RegistrationPage from "../views/RegistrationPage/RegistrationPage";
 import LoginPage from "../views/LoginPage/LoginPage";
+import Dashboard from '../views/DashboardPage/Board'
 import NotFound from "../views/NotFound/NotFoundPage";
 
 // Components
 import Loader from "../components/Loader/Loader";
+import Navbar from "../components/Navbar/Navbar";
 
 // Redux state
 import { RootState } from "../redux/store/store";
@@ -36,10 +38,10 @@ const AppRouter = () => {
           }
         />
         <Route path="/app" element={<PrivateRoute />}>
-          {/* <Route element={<Layout />}> */}
-          {/* <Route index element={<BoardPage />} /> */}
+          <Route element={<Navbar />}>
+            <Route index element={<Dashboard />} />
+          </Route>
         </Route>
-        {/* </Route> */}
         <Route path="/registration" element={<RegistrationPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="*" element={<NotFound />} />

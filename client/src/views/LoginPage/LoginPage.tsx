@@ -81,7 +81,7 @@ const LoginPage: React.FC<LoginPageProps> = () => {
         <div className={styles.blocksWrap}>
           <div className={styles.topWrap}>
             <h1>Let's Get Started</h1>
-            <p>Sign in to Wiki-Clone</p>
+            <p>Sign in to Trello-Clone</p>
           </div>
           <form onSubmit={handleSubmit} style={{ width: "70%" }}>
             <div className={styles.inputField}>
