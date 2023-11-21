@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { authService } from "../../services/authService";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../redux/store/store";
-import { fetchUser } from "../../redux/slices/userSlice";
+import { fetchUser, setCurrentUser } from "../../redux/slices/userSlice";
 
 // Icons
 import { FaUser, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
@@ -49,22 +49,20 @@ const LoginPage: React.FC<LoginPageProps> = () => {
   const handleLogin = async () => {
     try {
       setIsLoading(true);
-      const user = {
-        id: 0,
-        name: "",
+      const response = await authService.login({
         email: data.email,
         password: data.password,
-      };
-      const response = await authService.login(user);
+      });
       if (response?.data?.token) {
-        await dispatch(fetchUser());
+        dispatch(setCurrentUser(response.data.user)); //
+        dispatch(fetchUser());
         navigate("/app");
       }
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
       setIsError(true);
-      console.log(error);
+      console.error(error);
     }
   };
 

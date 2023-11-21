@@ -1,6 +1,7 @@
 .board {
   background-color: #f4f5f7;
   padding: 20px;
+
 }
 
 .header {
@@ -29,6 +30,15 @@
   margin-right: 20px;
 }
 
+.name {
+  display: flex;
+  justify-content: space-between;
+}
+
+.dotsIconContainer {
+  cursor: pointer;
+}
+
 .list {
   background-color: white;
   width: 280px;
@@ -38,14 +48,14 @@
 }
 
 h3 {
-  margin: 0;
+  margin: 0 0 10px;
   font-size: 20px;
 }
 
 .taskCard {
   background-color: #dfe1e6;
   padding: 8px;
-  margin-top: 10px;
+  margin-bottom: 10px;
   border-radius: 4px;
 }
 

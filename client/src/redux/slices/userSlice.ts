@@ -1,50 +1,70 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { getUser } from "../../services/userService";
-import { User } from "../../interfaces/interfaces";
+import { tokenService } from "../../services/tokenService";
+import { User, UserState } from "../../interfaces/interfaces";
+import { authService } from "../../services/authService";
 
-interface UserState {
-  currentUser: User;
-  isLoading: boolean;
-  isAuthenticated: boolean;
-  error: any;
-}
-
-export const fetchUser = createAsyncThunk(
+export const fetchUser = createAsyncThunk<User, void, { rejectValue: string }>(
   "user/fetch",
   async (_, { rejectWithValue }) => {
     try {
-      const accessToken = localStorage.getItem("token");
-      if (accessToken) {
-        const user = await getUser();
-        return { user, isAuthenticated: true };
+      const accessToken = tokenService.getToken();
+      if (!accessToken) {
+        return rejectWithValue("No access token found");
       }
-      return { user: {} as User, isAuthenticated: false };
-    } catch (error) {
-      return rejectWithValue(error);
+      const user = await getUser(accessToken);
+      return user;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
     }
   }
 );
 
+const initialState: UserState = {
+  currentUser: null,
+  isAuthenticated: tokenService.getToken() ? true : false,
+  isLoading: false,
+  error: null,
+};
+
 const userSlice = createSlice({
   name: "user",
-  initialState: {
-    currentUser: { id: 0, name: "" },
-    isAuthenticated: !!localStorage.getItem("token"),
-    error: null,
-  } as UserState,
-  reducers: {},
-  extraReducers: (builder) => {
-    builder.addCase(fetchUser.fulfilled, (state, action) => {
-      state.currentUser = action.payload.user;
-      state.isAuthenticated = action.payload.isAuthenticated;
-      state.isLoading = false;
-    });
-    builder.addCase(fetchUser.rejected, (state, action) => {
+  initialState,
+  reducers: {
+    logout: (state) => {
+      authService.logout();
+      state.currentUser = null;
       state.isAuthenticated = false;
-      state.isLoading = false;
-      state.error = action.payload;
-    });
+    },
+    setCurrentUser: (state, action: PayloadAction<User>) => {
+      state.currentUser = action.payload;
+      state.isAuthenticated = true;
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchUser.pending, (state: UserState) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(
+        fetchUser.fulfilled,
+        (state: UserState, action: PayloadAction<User>) => {
+          state.currentUser = action.payload;
+          state.isAuthenticated = true;
+          state.isLoading = false;
+        }
+      )
+      .addCase(
+        fetchUser.rejected,
+        (state: UserState, action: PayloadAction<string | undefined>) => {
+          state.error = action.payload ?? "An unknown error occurred";
+          state.isAuthenticated = false;
+          state.isLoading = false;
+        }
+      );
   },
 });
 
+export const { logout, setCurrentUser } = userSlice.actions;
 export default userSlice.reducer;

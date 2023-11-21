@@ -1,6 +1,6 @@
 import API, { API_URL } from "../API";
 import { tokenService } from "./tokenService";
-import { User } from "../interfaces/interfaces";
+import { User, LoginData } from "../interfaces/interfaces";
 
 export const authService = {
   registration: async (user: User) => {
@@ -8,10 +8,10 @@ export const authService = {
     return data;
   },
 
-  login: async (user: User) => {
-    const data = await API.post(`${API_URL}/auth/login`, user);
-    tokenService.updateToken(data.data.token);
-    return data;
+  login: async (data: LoginData) => {
+    const response = await API.post(`${API_URL}/auth/login`, data);
+    tokenService.updateToken(response.data.token);
+    return response;
   },
 
   logout: async () => {

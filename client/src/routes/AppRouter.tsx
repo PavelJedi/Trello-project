@@ -13,7 +13,7 @@ import NotFound from "../views/NotFound/NotFoundPage";
 
 // Components
 import Loader from "../components/Loader/Loader";
-import Navbar from "../components/Navbar/Navbar";
+import Navbar from "../components/layout/Navbar/Navbar";
 
 // Redux state
 import { RootState } from "../redux/store/store";

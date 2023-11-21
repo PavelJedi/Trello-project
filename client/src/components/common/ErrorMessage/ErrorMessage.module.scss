@@ -1,0 +1,11 @@
+.errorMessage {
+  display: flex;
+  align-items: center;
+  color: #ff6b6b;
+  font-size: 14px;
+  margin-top: 4px;
+
+  svg {
+    margin-right: 5px;
+  }
+}

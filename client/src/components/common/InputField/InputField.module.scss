@@ -1,0 +1,21 @@
+.inputField {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.input {
+  width: 100%;
+  padding: 10px 30px 10px 40px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+}
+
+.icon {
+  position: absolute;
+  left: 10px;
+  color: #a1a4b5;
+}
