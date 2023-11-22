@@ -11,7 +11,12 @@ exports.getAllBoards = async (req, res) => {
 
 exports.createBoard = async (req, res) => {
   try {
-    const board = await BoardService.createBoard(req.body);
+    const userId = req.user.id;
+    const boardDataWithOwner = {
+      ...req.body,
+      owner: userId,
+    };
+    const board = await BoardService.createBoard(boardDataWithOwner);
     res.status(201).json(board);
   } catch (err) {
     res.status(400).json({ error: err.message });

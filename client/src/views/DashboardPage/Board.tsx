@@ -3,9 +3,9 @@ import { RootState } from "../../redux/store/store";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchBoards,
-  addBoard,
   updateBoardAsync,
   deleteBoardAsync,
+  addNewBoard,
 } from "../../redux/slices/boardSlice";
 import { AppDispatch } from "../../redux/store/store";
 import styles from "./Board.module.scss";
@@ -15,8 +15,6 @@ const Board: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
   const boards = useSelector((state: RootState) => state.boards.boards);
   const [newBoardTitle, setNewBoardTitle] = useState("");
-
-  console.log(boards);
 
   useEffect(() => {
     dispatch(fetchBoards());
@@ -28,11 +26,10 @@ const Board: React.FC = () => {
     if (newBoardTitle.trim() === "") {
       return;
     }
-
     const newBoard = {
       title: newBoardTitle,
     };
-    dispatch(addBoard(newBoard));
+    dispatch(addNewBoard(newBoard));
     setNewBoardTitle("");
   };
 
