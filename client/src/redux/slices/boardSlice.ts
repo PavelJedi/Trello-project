@@ -55,7 +55,7 @@ const boardSlice = createSlice({
       })
       .addCase(updateBoardAsync.fulfilled, (state, action) => {
         const index = state.boards.findIndex(
-          (board) => board.id === action.payload.id
+          (board) => board._id === action.payload._id
         );
         if (index !== -1) {
           state.boards[index] = action.payload;
@@ -63,7 +63,7 @@ const boardSlice = createSlice({
       })
       .addCase(deleteBoardAsync.fulfilled, (state, action) => {
         state.boards = state.boards.filter(
-          (board) => board.id !== action.payload
+          (board) => board._id !== action.payload
         );
       });
   },

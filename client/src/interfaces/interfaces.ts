@@ -29,7 +29,7 @@ export interface ShowPasswordState {
 }
 
 export interface Board {
-  id: string;
+  _id: string;
   title: string;
   description: string;
   owner: User;

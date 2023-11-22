@@ -35,7 +35,7 @@ const Board: React.FC = () => {
 
   const handleUpdateBoard = (boardId: string, updatedTitle: string) => {
     const updatedBoard = {
-      id: boardId,
+      _id: boardId,
       title: updatedTitle,
     };
     dispatch(updateBoardAsync({ boardId, updatedBoard }));
@@ -51,31 +51,34 @@ const Board: React.FC = () => {
         <h2>{boardTitle}</h2>
       </div>
       <div className={styles.lists}>
-        {boards.map((board) => (
-          <div key={board.id} className={styles.listContainer}>
-            <div className={styles.list}>
-              <div className={styles.name}>
-                <input
-                  type="text"
-                  value={board.title}
-                  onChange={(e) => handleUpdateBoard(board.id, e.target.value)}
-                />
-                <div className={styles.dotsIconContainer}>
-                  <img src={dots} alt="dots-icon" />
+        {boards.map((board) => {
+          return (
+            <div key={board._id} className={styles.listContainer}>
+              <div className={styles.list}>
+                <div className={styles.name}>
+                  <input
+                    type="text"
+                    value={board.title}
+                    onChange={(e) =>
+                      handleUpdateBoard(board._id, e.target.value)
+                    }
+                  />
+                  <div className={styles.dotsIconContainer}>
+                    <img src={dots} alt="dots-icon" />
+                  </div>
+                  <button
+                    onClick={() => {
+                      handleDeleteBoard(board._id);
+                    }}
+                  >
+                    Delete
+                  </button>
                 </div>
-                <button
-                  onClick={() => {
-                    console.log("Deleting board with ID:", board.id);
-                    handleDeleteBoard(board.id);
-                  }}
-                >
-                  Delete
-                </button>
+                {/* Render tasks and other components for each board */}
               </div>
-              {/* Render tasks and other components for each board */}
             </div>
-          </div>
-        ))}
+          );
+        })}
         <div className={styles.addListPlaceholder}>
           <input
             type="text"
