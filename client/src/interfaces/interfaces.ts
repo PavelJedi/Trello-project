@@ -35,6 +35,7 @@ export interface Board {
   owner: User;
   members: User[];
   createdAt: Date;
+  backgroundColor?: string;
 }
 
 export interface UserState {

@@ -8,7 +8,7 @@ import PrivateRoute from "./PrivateRoute";
 // Pages
 import RegistrationPage from "../views/RegistrationPage/RegistrationPage";
 import LoginPage from "../views/LoginPage/LoginPage";
-import Dashboard from '../views/DashboardPage/Board'
+import HomePage from '../views/HomePage/Board'
 import NotFound from "../views/NotFound/NotFoundPage";
 
 // Components
@@ -39,7 +39,7 @@ const AppRouter = () => {
         />
         <Route path="/app" element={<PrivateRoute />}>
           <Route element={<Navbar />}>
-            <Route index element={<Dashboard />} />
+            <Route index element={<HomePage />} />
           </Route>
         </Route>
         <Route path="/registration" element={<RegistrationPage />} />

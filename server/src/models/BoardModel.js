@@ -9,7 +9,7 @@ const boardSchema = new mongoose.Schema({
   description: String,
   owner: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User", 
+    ref: "User",
     required: true,
   },
   members: [
@@ -18,6 +18,8 @@ const boardSchema = new mongoose.Schema({
       ref: "User",
     },
   ],
+  columns: [{ type: mongoose.Schema.Types.ObjectId, ref: "Column" }],
+  backgroundColor: String,
   createdAt: {
     type: Date,
     default: Date.now,
