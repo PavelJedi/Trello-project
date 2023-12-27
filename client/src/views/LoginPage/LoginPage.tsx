@@ -47,24 +47,24 @@ const LoginPage: React.FC<LoginPageProps> = () => {
   };
 
   const handleLogin = async () => {
+    setIsLoading(true);
     try {
-      setIsLoading(true);
       const response = await authService.login({
         email: data.email,
         password: data.password,
       });
       if (response?.data?.token) {
-        dispatch(setCurrentUser(response.data.user)); //
-        dispatch(fetchUser());
-        navigate("/app");
+        dispatch(fetchUser()).then(() => navigate("/app"));
+      } else {
+        setIsError(true);
       }
-      setIsLoading(false);
     } catch (error) {
-      setIsLoading(false);
       setIsError(true);
       console.error(error);
     }
+    setIsLoading(false);
   };
+  
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

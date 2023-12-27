@@ -8,7 +8,8 @@ import PrivateRoute from "./PrivateRoute";
 // Pages
 import RegistrationPage from "../views/RegistrationPage/RegistrationPage";
 import LoginPage from "../views/LoginPage/LoginPage";
-import HomePage from '../views/HomePage/Board'
+import HomePage from "../views/HomePage/Board";
+// import ColumnPage from "../views/ColumnPage/ColumnPage";
 import NotFound from "../views/NotFound/NotFoundPage";
 
 // Components
@@ -40,6 +41,7 @@ const AppRouter = () => {
         <Route path="/app" element={<PrivateRoute />}>
           <Route element={<Navbar />}>
             <Route index element={<HomePage />} />
+            {/* <Route path="boards/:boardId" element={<ColumnPage />} /> */}
           </Route>
         </Route>
         <Route path="/registration" element={<RegistrationPage />} />

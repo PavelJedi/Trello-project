@@ -8,13 +8,15 @@ import {
   addNewBoard,
 } from "../../redux/slices/boardSlice";
 import { AppDispatch } from "../../redux/store/store";
-import Card from "../CardsPage/Card";
+import Card from "../../components/Card/Card";
 import styles from "./Board.module.scss";
+import { useNavigate } from "react-router-dom";
 
 const Board: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
   const boards = useSelector((state: RootState) => state.boards.boards);
   const [newBoardTitle, setNewBoardTitle] = useState("");
+  const currentUser = useSelector((state: RootState) => state.user.currentUser);
 
   useEffect(() => {
     dispatch(fetchBoards());
@@ -39,9 +41,11 @@ const Board: React.FC = () => {
       title: newBoardTitle,
       backgroundColor: randomColor,
     };
-    dispatch(addNewBoard(newBoard));
+    const userId = currentUser?._id || 'defaultUserId';
+    dispatch(addNewBoard({ board: newBoard, userId }));
     setNewBoardTitle("");
   };
+  
 
   const handleUpdateBoard = (boardId: string, updatedTitle: string) => {
     const updatedBoard = {
@@ -55,6 +59,12 @@ const Board: React.FC = () => {
     dispatch(deleteBoardAsync(boardId));
   };
 
+  const navigate = useNavigate();
+
+  const handleBoardClick = (boardId: string) => {
+    navigate(`/app/boards/${boardId}`);
+  };
+
   return (
     <div className={styles.dashboard}>
       <div className={styles.section}>
@@ -65,16 +75,24 @@ const Board: React.FC = () => {
               key={board._id}
               className={styles.boardCard}
               style={{ backgroundColor: board.backgroundColor }}
+              onClick={() => handleBoardClick(board._id)}
             >
               <input
                 type="text"
                 value={board.title}
                 className={styles.boardTitleInput}
-                onChange={(e) => handleUpdateBoard(board._id, e.target.value)}
+                onChange={(e) => {
+                  e.stopPropagation();
+                  handleUpdateBoard(board._id, e.target.value);
+                }}
+                onClick={(e) => e.stopPropagation()}
               />
               <button
                 className={styles.deleteButton}
-                onClick={() => handleDeleteBoard(board._id)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDeleteBoard(board._id);
+                }}
               >
                 Delete
               </button>

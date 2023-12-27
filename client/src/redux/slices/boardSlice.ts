@@ -18,8 +18,9 @@ export const fetchBoards = createAsyncThunk("boards/fetchAll", async () => {
 
 export const addNewBoard = createAsyncThunk(
   "boards/addNew",
-  async (board: Partial<Board>) => {
-    const response = await createBoard(board);
+  async (boardData: { board: Partial<Board>, userId: string }) => {
+    const { board, userId } = boardData;
+    const response = await createBoard(board, userId);
     return response;
   }
 );
