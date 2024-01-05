@@ -15,9 +15,15 @@ export const getBoards = async (): Promise<Board[]> => {
   }
 };
 
-export const createBoard = async (board: Partial<Board>, userId: string): Promise<Board> => {
+export const createBoard = async (
+  board: Partial<Board>,
+  userId: string
+): Promise<Board> => {
   try {
-    const response: AxiosResponse<Board> = await API.post("/api/boards", {...board, owner: userId});
+    const response: AxiosResponse<Board> = await API.post("/api/boards", {
+      ...board,
+      owner: userId,
+    });
     return response.data;
   } catch (error) {
     if (error instanceof Error) {

@@ -62,7 +62,7 @@ const Board: React.FC = () => {
   const navigate = useNavigate();
 
   const handleBoardClick = (boardId: string) => {
-    navigate(`/app/boards/${boardId}`);
+    navigate(`/app/list/${boardId}`);
   };
 
   return (

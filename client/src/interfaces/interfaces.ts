@@ -50,14 +50,24 @@ export interface BoardState {
   isLoading: boolean;
   error: string | null;
 }
+
+export interface Column {
+  _id: string;
+  boardId: string;
+  title: string;
+  position: number;
+  tasks: Task[];
+  createdAt: Date;
+}
+
 export interface Task {
-  id: string;
+  _id: string;
   title: string;
   description: string;
-  assignee: string;
+  assignee: string | null;
   columnId: string;
   position: number;
-  dueDate: Date;
+  dueDate: Date | null;
   labels: string[];
   attachments: Array<{
     name: string;

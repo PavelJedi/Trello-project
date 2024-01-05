@@ -1,8 +1,10 @@
 // columnService.js
 const Column = require("../models/ColumnModel");
+const Board = require("../models/BoardModel");
 
 exports.getAllColumns = async (boardId) => {
-  return await Column.find({ boardId }).sort({ position: 1 });
+  const board = await Board.findById(boardId).populate("columns");
+  return board.columns;
 };
 
 exports.createColumn = async (columnData) => {
