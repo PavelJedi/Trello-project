@@ -8,7 +8,6 @@ import {
   addNewBoard,
 } from "../../redux/slices/boardSlice";
 import { AppDispatch } from "../../redux/store/store";
-import Card from "../../components/Card/Card";
 import styles from "./Board.module.scss";
 import { useNavigate } from "react-router-dom";
 

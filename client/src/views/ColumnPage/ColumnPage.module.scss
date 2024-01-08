@@ -2,7 +2,6 @@
   display: flex;
   overflow-x: auto;
   padding: 20px;
-
 }
 
 .column {
@@ -17,6 +16,8 @@
 .columnTitle {
   font-size: 20px;
   margin-bottom: 10px;
+  background: none;
+  border: none;
 }
 
 .addCardButton {

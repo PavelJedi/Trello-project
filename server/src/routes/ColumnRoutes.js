@@ -4,9 +4,9 @@ const columnController = require("../controllers/ColumnController");
 
 router.get("/:boardId", columnController.getAllColumns);
 
-router.get("/:id", columnController.getColumnById);
-
 router.post("/", columnController.createColumn);
+
+router.get("/:id", columnController.getColumnById);
 
 router.patch("/:id", columnController.updateColumn);
 

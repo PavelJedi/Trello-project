@@ -1,17 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { RootState } from "../../redux/store/store";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchColumns, addNewColumn } from "../../redux/slices/columnSlice";
+import {
+  fetchColumns,
+  addNewColumn,
+  updateColumnAsync,
+  deleteColumnAsync,
+} from "../../redux/slices/columnSlice";
 import { AppDispatch } from "../../redux/store/store";
 import { useParams } from "react-router-dom";
-
-//service
-import { getColumns } from "../../services/columnService";
-
-//components
-import Card from "../../components/Card/Card";
-
-//styles
 import styles from "./ColumnPage.module.scss";
 
 const Column: React.FC = () => {
@@ -44,12 +41,32 @@ const Column: React.FC = () => {
     });
   };
 
+  const handleUpdateColumn = (columnId: string, updatedTitle: string) => {
+    const updatedColumn = {
+      _id: columnId,
+      title: updatedTitle,
+    };
+    dispatch(updateColumnAsync({ columnId, updatedColumn }));
+  };
+
+  const handleDeleteColumn = (columnId: string) => {
+    dispatch(deleteColumnAsync(columnId));
+  };
+
   return (
     <div className={styles.columnsContainer}>
-      {/* Iterate over columns */}
       {columns.map((column) => (
         <div key={column._id} className={styles.column}>
-          <h2 className={styles.columnTitle}>{column.title}</h2>
+          <input
+            type="text"
+            value={column.title}
+            className={styles.columnTitle}
+            onChange={(e) => {
+              e.stopPropagation();
+              handleUpdateColumn(column._id, e.target.value);
+            }}
+            onClick={(e) => e.stopPropagation()}
+          />
           {/* Iterate over cards in the column
           {column.cards.map((card) => (
             <Card key={card.id} {...card} />
@@ -57,19 +74,19 @@ const Column: React.FC = () => {
           {/* Add card functionality */}
         </div>
       ))}
-      {showInput && (
+      {showInput ? (
         <div>
           <input
             type="text"
             value={newColumnTitle}
             onChange={(e) => setNewColumnTitle(e.target.value)}
+            onBlur={() => setShowInput(false)}
+            autoFocus
             placeholder="Enter new list title"
           />
           <button onClick={handleAddList}>Add List</button>
         </div>
-      )}
-      {/* Button to toggle input display */}
-      {!showInput && (
+      ) : (
         <button onClick={() => setShowInput(true)}>Add New List</button>
       )}
     </div>

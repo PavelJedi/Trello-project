@@ -28,17 +28,48 @@ export const addNewColumn = createAsyncThunk(
   }
 );
 
+export const updateColumnAsync = createAsyncThunk(
+  "columns/updateColumn",
+  async (payload: { columnId: string; updatedColumn: Partial<Column> }) => {
+    const { columnId, updatedColumn } = payload;
+    const response = await updateColumnService(columnId, updatedColumn);
+    return response;
+  }
+);
+
+export const deleteColumnAsync = createAsyncThunk(
+  "columns/deleteColumn",
+  async (columnId: string) => {
+    await deleteColumnService(columnId);
+    return columnId;
+  }
+);
+
 const columnSlice = createSlice({
   name: "columns",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(fetchColumns.fulfilled, (state, action) => {
-      state.columns = action.payload;
-    });
-    builder.addCase(addNewColumn.fulfilled, (state, action) => {
-      state.columns.push(action.payload);
-    });
+    builder
+      .addCase(fetchColumns.fulfilled, (state, action) => {
+        state.columns = action.payload;
+      })
+      .addCase(addNewColumn.fulfilled, (state, action) => {
+        state.columns.push(action.payload);
+      })
+      .addCase(updateColumnAsync.fulfilled, (state, action) => {
+        const index = state.columns.findIndex(
+          (column) => column._id === action.payload._id
+        );
+        if (index !== -1) {
+          state.columns[index] = action.payload;
+        }
+      })
+      .addCase(deleteColumnAsync.fulfilled, (state, action) => {
+        state.columns = state.columns.filter(
+          (column) => column._id !== action.payload
+        );
+      });
   },
 });
 
