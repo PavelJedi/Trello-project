@@ -9,6 +9,8 @@ import {
 } from "../../redux/slices/columnSlice";
 import { AppDispatch } from "../../redux/store/store";
 import { useParams } from "react-router-dom";
+import dots from "../../assets/dots.svg";
+import ContextMenu from "../../components/ContextMenu/ContextMenu";
 import styles from "./ColumnPage.module.scss";
 
 const Column: React.FC = () => {
@@ -16,6 +18,12 @@ const Column: React.FC = () => {
   const columns = useSelector((state: RootState) => state.columns.columns);
   const [newColumnTitle, setNewColumnTitle] = useState("");
   const [showInput, setShowInput] = useState(false);
+  const [showContextMenu, setShowContextMenu] = useState(false);
+  const [contextMenuPosition, setContextMenuPosition] = useState({
+    top: 0,
+    left: 0,
+  });
+  const [selectedColumnId, setSelectedColumnId] = useState<string | null>(null);
 
   const { boardId } = useParams();
 
@@ -25,7 +33,8 @@ const Column: React.FC = () => {
     }
   }, [dispatch, boardId]);
 
-  const handleAddList = (): void => {
+  const handleAddList = (e: React.FormEvent<HTMLFormElement>): void => {
+    e.preventDefault();
     if (newColumnTitle.trim() === "" || !boardId) {
       return;
     }
@@ -51,22 +60,54 @@ const Column: React.FC = () => {
 
   const handleDeleteColumn = (columnId: string) => {
     dispatch(deleteColumnAsync(columnId));
+    setShowContextMenu(false);
   };
+
+  const handleContextMenuClick = (
+    event: React.MouseEvent,
+    columnId: string
+  ) => {
+    event.preventDefault();
+    event.stopPropagation();
+    setSelectedColumnId(columnId);
+    setContextMenuPosition({ top: event.clientY, left: event.clientX });
+    setShowContextMenu(true);
+  };
+
+  const handleDocumentClick = () => {
+    setShowContextMenu(false);
+  };
+
+  useEffect(() => {
+    document.addEventListener("click", handleDocumentClick);
+    return () => {
+      document.removeEventListener("click", handleDocumentClick);
+    };
+  }, []);
 
   return (
     <div className={styles.columnsContainer}>
       {columns.map((column) => (
         <div key={column._id} className={styles.column}>
-          <input
-            type="text"
-            value={column.title}
-            className={styles.columnTitle}
-            onChange={(e) => {
-              e.stopPropagation();
-              handleUpdateColumn(column._id, e.target.value);
-            }}
-            onClick={(e) => e.stopPropagation()}
-          />
+          <div className={styles.columnHeader}>
+            <input
+              type="text"
+              value={column.title}
+              className={styles.columnTitle}
+              onChange={(e) => {
+                e.stopPropagation();
+                handleUpdateColumn(column._id, e.target.value);
+              }}
+              onClick={(e) => e.stopPropagation()}
+            />
+            <img
+              src={dots}
+              alt="Dots"
+              className={styles.dotsIcon}
+              onClick={(e) => handleContextMenuClick(e, column._id)}
+              onContextMenu={(e) => handleContextMenuClick(e, column._id)}
+            />
+          </div>
           {/* Iterate over cards in the column
           {column.cards.map((card) => (
             <Card key={card.id} {...card} />
@@ -75,19 +116,30 @@ const Column: React.FC = () => {
         </div>
       ))}
       {showInput ? (
-        <div>
+        <form onSubmit={handleAddList}>
           <input
             type="text"
             value={newColumnTitle}
             onChange={(e) => setNewColumnTitle(e.target.value)}
-            onBlur={() => setShowInput(false)}
             autoFocus
             placeholder="Enter new list title"
           />
-          <button onClick={handleAddList}>Add List</button>
-        </div>
+          <button type="submit">Add List</button>
+        </form>
       ) : (
-        <button onClick={() => setShowInput(true)}>Add New List</button>
+        <button
+          className={styles.addListButton}
+          onClick={() => setShowInput(true)}
+        >
+          + Add New List
+        </button>
+      )}
+
+      {showContextMenu && selectedColumnId && (
+        <ContextMenu
+          onDelete={() => handleDeleteColumn(selectedColumnId)}
+          position={contextMenuPosition}
+        />
       )}
     </div>
   );

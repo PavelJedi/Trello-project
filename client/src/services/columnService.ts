@@ -17,8 +17,7 @@ export const getColumns = async (boardId: string): Promise<Column[]> => {
 
   export const createColumn = async (column: Partial<Column>): Promise<Column> => {
     try {
-      const response: AxiosResponse<Column> = await API.post("/api/columns", {...column});
-      console.log(response);
+      const response: AxiosResponse<Column> = await API.post("/api/columns", {...column}); 
       return response.data;
     } catch (error) {
       if (error instanceof Error) {
