@@ -12,6 +12,7 @@ import { useParams } from "react-router-dom";
 import dots from "../../assets/dots.svg";
 import ContextMenu from "../../components/ContextMenu/ContextMenu";
 import styles from "./ColumnPage.module.scss";
+import Card from "../../components/Card/Card";
 
 const Column: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -108,11 +109,9 @@ const Column: React.FC = () => {
               onContextMenu={(e) => handleContextMenuClick(e, column._id)}
             />
           </div>
-          {/* Iterate over cards in the column
-          {column.cards.map((card) => (
-            <Card key={card.id} {...card} />
-          ))} */}
-          {/* Add card functionality */}
+          {column.tasks.map((task) => (
+            <Card key={task._id} {...task} />
+          ))} 
         </div>
       ))}
       {showInput ? (

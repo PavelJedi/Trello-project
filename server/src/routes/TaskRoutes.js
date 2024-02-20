@@ -1,6 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const taskController = require("../controllers/TaskController");
+const multer = require("multer");
+const upload = multer({ dest: "uploads/" });
+
+router.post("/", upload.array("files"), taskController.createTask);
 
 router.get("/:columnId", taskController.getAllTasks);
 

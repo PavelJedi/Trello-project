@@ -71,9 +71,11 @@ export interface Task {
   labels: string[];
   attachments: Array<{
     name: string;
+    path: string;
     url: string;
   }>;
   createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface InputFieldProps {

@@ -12,7 +12,10 @@ exports.getAllTasks = async (req, res) => {
 
 exports.createTask = async (req, res) => {
   try {
-    const task = await TaskService.createTask(req.body);
+    const { title, description, assignee, columnId, boardId } = req.body;
+    const files = req.files ? req.files.map((file) => file.path) : [];
+    const taskData = { title, description, assignee, columnId, boardId };
+    const task = await TaskService.createTask(taskData);
     res.status(201).json(task);
   } catch (err) {
     res.status(400).json({ error: err.message });

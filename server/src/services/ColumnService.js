@@ -9,7 +9,11 @@ exports.getAllColumns = async (boardId) => {
 
 exports.createColumn = async (columnData) => {
   const column = new Column(columnData);
-  return await column.save();
+  await column.save();
+  await Board.findByIdAndUpdate(columnData.boardId, {
+    $push: { columns: column._id },
+  });
+  return column;
 };
 
 exports.getColumnById = async (id) => {

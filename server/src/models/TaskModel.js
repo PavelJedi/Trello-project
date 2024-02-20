@@ -4,36 +4,25 @@ const taskSchema = new mongoose.Schema({
   title: {
     type: String,
     required: true,
-    trim: true,
   },
   description: String,
+  files: [String], 
   assignee: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User', 
+    required: true,
   },
   columnId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Column', 
+    ref: 'Column',
     required: true,
   },
-  position: Number, 
-  dueDate: Date,
-  labels: [
-    {
-      type: String,
-      trim: true,
-    },
-  ],
-  attachments: [
-    {
-      name: String,
-      url: String,
-    },
-  ],
-  createdAt: {
-    type: Date,
-    default: Date.now,
+  boardId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Board',
+    required: true,
   },
 });
 
-module.exports = mongoose.model('Task', taskSchema);
+const Task = mongoose.model('Task', taskSchema);
+module.exports = Task;
